@@ -2,8 +2,8 @@ name: Check flake.lock in sync with cli
 
 on:
   pull_request:
-    paths:
-      - "pulumi/flake.lock"
+    # paths:
+    #   - "pulumi/flake.lock"
 
 permissions:
   contents: read
