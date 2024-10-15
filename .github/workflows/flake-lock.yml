@@ -2,8 +2,8 @@ name: Check flake.lock in sync with cli
 
 on:
   pull_request:
-    # paths:
-    #   - "pulumi/flake.lock"
+    paths:
+      - "flake.lock"
 
 permissions:
   contents: read
@@ -24,5 +24,6 @@ jobs:
       - name: diff
         run: |
           if ! diff <(jq --sort-keys <<< $cliLock) <(jq <flake.lock); then 
-          echo "::warning::flake.lock is out of sync with cli flake.lock"
+            echo "::warning::flake.lock is out of sync with cli flake.lock"
+            exit 1
           fi
