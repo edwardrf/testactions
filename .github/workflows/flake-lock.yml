@@ -15,7 +15,9 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0
+          sparse-checkout: |
+            flake.lock
+          sparse-checkout-cone-mode: false
 
       - name: fetch cli flakes.lock
         run: |
@@ -23,7 +25,7 @@ jobs:
           
       - name: diff
         run: |
-          if ! diff <(jq --sort-keys <<< $cliLock) <(jq <flake.lock); then 
+          if ! diff <(jq --sort-keys <cli-flake.lock) <(jq --sort-keys <flake.lock); then 
             echo "::warning::flake.lock is out of sync with cli flake.lock"
             exit 1
           fi
