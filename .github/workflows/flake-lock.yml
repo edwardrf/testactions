@@ -20,4 +20,4 @@ jobs:
           echo "The event name is ${{ github.event_name }}"
           echo "Is the event schedule? ${{ github.event_name == 'schedule' }}"
           echo "Is the event pull_request? ${{ github.event_name == 'pull_request' }}"
-          echo "Test ternery: ${{ github.event_name == 'schedule' ? 'yes' : 'no' }}"
+          echo "Test ternery: ${{ github.event_name == 'schedule' && 'yes' || 'no' }}"
