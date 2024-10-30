@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 jobs:
-  check event name:
+  CheckEventName:
     name: Check event name
     runs-on: ubuntu-latest
     steps:
