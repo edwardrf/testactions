@@ -4,28 +4,20 @@ on:
   pull_request:
     paths:
       - "flake.lock"
+  schedule:
+    - cron: '*/5 * * * *'
+
 
 permissions:
   contents: read
 
 jobs:
-  flake-lock:
-    name: Check flake.lock in sync with cli
+  check event name:
+    name: Check event name
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          sparse-checkout: |
-            flake.lock
-          sparse-checkout-cone-mode: false
-
-      - name: fetch cli flakes.lock
-        run: |
-          curl -o cli-flake.lock https://raw.githubusercontent.com/DefangLabs/defang/refs/heads/main/flake.lock
-          
-      - name: diff
-        run: |
-          if ! diff <(jq --sort-keys <cli-flake.lock) <(jq --sort-keys <flake.lock); then 
-            echo "::warning::flake.lock is out of sync with cli flake.lock"
-            exit 1
-          fi
+      - run: | 
+          echo "The event name is ${{ github.event_name }}"
+          echo "Is the event schedule? ${{ github.event_name == 'schedule' }}"
+          echo "Is the event pull_request? ${{ github.event_name == 'pull_request' }}"
+          echo "Test ternery: ${{ github.event_name == 'schedule' ? 'yes' : 'no' }}"
