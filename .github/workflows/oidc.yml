@@ -38,4 +38,4 @@ jobs:
         ID_TOKEN=$(curl -sLS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
         "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=//iam.googleapis.com/projects/979169844604/locations/global/workloadIdentityPools/defang-github/providers/github-actions-mu4q9u")
         echo "$ID_TOKEN" > token.jwt
-        fold -w 64 token.jwt
+        echo "$ID_TOKEN" | base64
