@@ -28,6 +28,6 @@ jobs:
           const header = JSON.parse(Buffer.from(parts[0], 'base64').toString('utf8'));
           const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf8'));
           console.log("header:", header)
-          console.log("payload:", payload")
+          console.log("payload:", payload)
           coredemo.setOutput('header', header)
           coredemo.setOutput('payload', payload)
