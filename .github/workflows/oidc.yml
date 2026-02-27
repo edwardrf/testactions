@@ -25,8 +25,7 @@ jobs:
           if (parts.length !== 3) {
             throw new Error('Invalid JWT format');
           }
-          const header = JSON.parse(base64UrlDecode(parts[0]));
-          const payload = JSON.parse(base64UrlDecode(parts[1]));
-          const signature = parts[2]; // raw base64url signature
+          const header = JSON.parse(Buffer.from(parts[0], 'base64').toString('utf8'));
+          const payload = JSON.parse(Buffer.from(parts[1], 'base64').toString('utf8'));
           coredemo.setOutput('header', header)
           coredemo.setOutput('payload', payload)
