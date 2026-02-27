@@ -33,13 +33,9 @@ jobs:
           console.log("payload:", payload);
           coredemo.setOutput('header', header);
           coredemo.setOutput('payload', payload);
-    - name: Get OIDC token
-      id: idtoken2
+    - name: Get ID Token
       run: |
-        echo "TOKEN=$(curl -s -H "Authorization: Bearer $GITHUB_TOKEN" \
-              -H "Accept: application/vnd.github.v3+json" \
-              "$ACTIONS_ID_TOKEN_REQUEST_URL")" >> $GITHUB_ENV
-    - name: Write token to file
-      run: |
-        echo "$TOKEN" > token.jwt
-        cat token.jwt
+        ID_TOKEN=$(curl -sLS -H "Authorization: bearer $ACTIONS_ID_TOKEN_REQUEST_TOKEN" \
+        "$ACTIONS_ID_TOKEN_REQUEST_URL&audience=//iam.googleapis.com/projects/979169844604/locations/global/workloadIdentityPools/defang-github/providers/github-actions-mu4q9u")
+        echo $ID_TOKEN > token.jwt
+        fold -w 64 token.jwt
