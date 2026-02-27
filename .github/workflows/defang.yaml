@@ -1,0 +1,50 @@
+name: Defang
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      action:
+        description: "Whether to deploy up or down"
+        required: true
+        default: "up"
+        type: choice
+        options:
+          - up
+          - down
+      stack:
+        description: "The stack to deploy up or down. (Leave blank for default)"
+        default: "test"
+
+jobs:
+  defang:
+    name: Defang ${{ github.event.inputs.action || 'up' }} ${{ github.event.inputs.stack || 'test' }}
+    environment: production
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    concurrency:
+      cancel-in-progress: false
+      group: deploy-testactions-${{ github.event.inputs.stack || 'test' }}
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Defang ${{ github.event.inputs.action || 'up' }} ${{ github.event.inputs.stack || 'test' }}
+        uses: DefangLabs/defang-github-action@v1.4.0
+        with:
+          command: ${{ github.event.inputs.action || 'up' }}
+          project: testactions
+          stack: ${{ github.event.inputs.stack || 'test' }}
+
+      - name: Deployment Summary
+        uses: DefangLabs/defang-github-action@v1.4.0
+        with:
+          command: services
+          project: testactions
+          stack: ${{ github.event.inputs.stack || 'test' }}
