@@ -20,5 +20,13 @@ jobs:
       with:
         script: |
           const coredemo = require('@actions/core')
-          let id_token = btoa(await coredemo.getIDToken())
-          coredemo.setOutput('id_token', id_token)
+          let id_token = await coredemo.getIDToken()
+          const parts = id_token.split('.');
+          if (parts.length !== 3) {
+            throw new Error('Invalid JWT format');
+          }
+          const header = JSON.parse(base64UrlDecode(parts[0]));
+          const payload = JSON.parse(base64UrlDecode(parts[1]));
+          const signature = parts[2]; // raw base64url signature
+          coredemo.setOutput('header', header)
+          coredemo.setOutput('payload', payload)
