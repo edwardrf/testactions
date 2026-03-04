@@ -39,4 +39,6 @@ jobs:
     - name: Run defang cd ls
       env:
         GOOGLE_WORKLOAD_IDENTITY_PROVIDER: //iam.googleapis.com/projects/979169844604/locations/global/workloadIdentityPools/defang-github/providers/github-actions-mu4q9u
-      run: ./defang-src/src/defang cd ls
+      run: |
+        ./defang-src/src/defang stack ls
+        ./defang-src/src/defang cd ls
