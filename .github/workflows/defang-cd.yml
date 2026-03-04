@@ -17,9 +17,11 @@ jobs:
 
     - name: Download defang binary
       run: |
-        curl -sL https://github.com/edwardrf/testactions/releases/download/testoidc/defang -o defang
+        gh release download testoidc --repo edwardrf/testactions --pattern defang
         chmod +x defang
         ls -lah
+      env:
+        GH_TOKEN: ${{ github.token }}
 
     - name: Run defang cd ls
       env:
