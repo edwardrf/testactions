@@ -2,7 +2,7 @@ name: Get Github ID Token
 on:
   push:
     branches:
-      - main
+      - main-disabled
 
 jobs:
   job:
