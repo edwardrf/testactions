@@ -31,7 +31,7 @@ jobs:
       run: |
         ls -lah
         pwd
-        make build
+        make install
       working-directory: defang-src/src
 
     - name: Run defang cd ls
