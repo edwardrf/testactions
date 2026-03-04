@@ -28,7 +28,10 @@ jobs:
         go-version-file: defang-src/src/go.mod
 
     - name: Build defang
-      run: make
+      run: |
+        ls -lah
+        pwd
+        make
       working-directory: defang-src/src
 
     - name: Run defang cd ls
