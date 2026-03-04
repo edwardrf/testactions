@@ -31,6 +31,8 @@ jobs:
       run: |
         ls -lah
         pwd
+        uname -a
+        cat /proc/cpuinfo
         go build -o defang ./cmd/cli
       working-directory: defang-src/src
 
