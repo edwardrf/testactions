@@ -15,17 +15,23 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Download defang binary
-      run: |
-        gh release download testoidc --repo edwardrf/testactions --pattern defang
-        chmod +x defang
-        ls -lah
-      env:
-        GH_TOKEN: ${{ github.token }}
+    - name: Checkout defang
+      uses: actions/checkout@v4
+      with:
+        repository: DefangLabs/defang
+        ref: edw/interactive-login
+        path: defang-src
+
+    - name: Set up Go
+      uses: actions/setup-go@v5
+      with:
+        go-version-file: defang-src/src/go.mod
+
+    - name: Build defang
+      run: make
+      working-directory: defang-src/src
 
     - name: Run defang cd ls
       env:
         GOOGLE_WORKLOAD_IDENTITY_PROVIDER: //iam.googleapis.com/projects/979169844604/locations/global/workloadIdentityPools/defang-github/providers/github-actions-mu4q9u
-      run: |
-        ls -lah
-        ./defang cd ls
+      run: ./defang-src/src/defang cd ls
