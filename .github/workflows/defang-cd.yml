@@ -42,5 +42,5 @@ jobs:
         GOOGLE_WORKLOAD_IDENTITY_PROVIDER: //iam.googleapis.com/projects/979169844604/locations/global/workloadIdentityPools/defang-github/providers/github-actions-mu4q9u
         GCP_PROJECT_ID: edw-test-samples-7
       run: |
-        ./defang-src/src/defang stack ls --debug
+        # ./defang-src/src/defang stack ls --debug
         ./defang-src/src/defang cd ls --debug
