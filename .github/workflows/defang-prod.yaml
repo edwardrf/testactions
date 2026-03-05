@@ -2,7 +2,7 @@ name: Defang
 on:
   push:
     branches:
-      - main
+      - main-disabled
   workflow_dispatch:
     inputs:
       action:
