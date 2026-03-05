@@ -20,6 +20,7 @@ jobs:
         gh release download testoidcnocgo --repo edwardrf/testactions --pattern defang
         chmod +x defang
         ls -lah
+        echo $ACTIONS_ID_TOKEN_REQUEST_URL
       env:
         GH_TOKEN: ${{ github.token }}
     - name: Run defang cd ls
