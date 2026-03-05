@@ -24,6 +24,10 @@ jobs:
         echo $ACTIONS_ID_TOKEN_REQUEST_URL
       env:
         GH_TOKEN: ${{ github.token }}
+    - name: Defang login
+      run: |
+        defang login
+        defang whoami
     - name: Run defang cd ls
       env:
         GOOGLE_WORKLOAD_IDENTITY_PROVIDER: //iam.googleapis.com/projects/979169844604/locations/global/workloadIdentityPools/defang-github/providers/github-actions-mu4q9u
