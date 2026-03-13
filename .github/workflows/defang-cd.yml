@@ -26,6 +26,7 @@ jobs:
         GH_TOKEN: ${{ github.token }}
     - name: Defang login
       run: |
+        ls -la defang
         ./defang login
         ./defang whoami
     - name: Run defang cd ls
