@@ -1,0 +1,53 @@
+name: Test Azure OIDC FIC
+
+on:
+  push:
+    branches:
+      - azure-oidc-fic-test
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    env:
+      CLIENT_ID: 0a29aff6-f174-4fbb-ba45-b8ca37e68479
+      TENANT_ID: 086eb1d7-91b4-475f-a0a9-8e7790b81c2d
+      SUBSCRIPTION_ID: 3947c723-19db-43db-946f-75e054bf3b53
+      PRINCIPAL_ID: b3f58b91-47cd-47e8-b041-451f11962438
+      RG_NAME: gh-oidc-rg800a59b3
+    steps:
+      - name: Az login (OIDC, federated via FIC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ env.CLIENT_ID }}
+          tenant-id: ${{ env.TENANT_ID }}
+          subscription-id: ${{ env.SUBSCRIPTION_ID }}
+
+      - name: Show identity
+        run: |
+          az account show -o json
+          echo "---"
+          az role assignment list --assignee "$CLIENT_ID" --all -o table
+
+      - name: Prove User Access Administrator (write)
+        run: |
+          set -euo pipefail
+          # Reader role definition id
+          READER_ROLE=acdd72a7-3385-48ef-bd42-f606fba81ae7
+          SCOPE="/subscriptions/$SUBSCRIPTION_ID/resourceGroups/$RG_NAME"
+          NAME=$(uuidgen)
+          echo "Creating role assignment (UAA-only operation)..."
+          az role assignment create \
+            --assignee-object-id "$PRINCIPAL_ID" \
+            --assignee-principal-type ServicePrincipal \
+            --role "$READER_ROLE" \
+            --scope "$SCOPE" \
+            --name "$NAME"
+          echo "Deleting role assignment..."
+          az role assignment delete --ids \
+            "$SCOPE/providers/Microsoft.Authorization/roleAssignments/$NAME"
+          echo "OK: User Access Administrator confirmed."
