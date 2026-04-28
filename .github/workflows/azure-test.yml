@@ -1,0 +1,22 @@
+name: Azure OIDC validation
+
+on:
+  workflow_dispatch:
+
+permissions:
+  id-token: write
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Azure login via OIDC
+        uses: azure/login@v2
+        with:
+          client-id: 0a29aff6-f174-4fbb-ba45-b8ca37e68479
+          tenant-id: 086eb1d7-91b4-475f-a0a9-8e7790b81c2d
+          subscription-id: 3947c723-19db-43db-946f-75e054bf3b53
+
+      - name: Show resolved Azure context
+        run: az account show
