@@ -1,50 +1,45 @@
 name: Defang
-
 on:
   push:
     branches:
-      - main_disabled
+      - main
   workflow_dispatch:
     inputs:
       action:
-        description: "Whether to deploy up or down"
+        description: Whether to deploy up or down
         required: true
-        default: "up"
+        default: up
         type: choice
         options:
           - up
           - down
       stack:
-        description: "The stack to deploy up or down. (Leave blank for default)"
-        default: "test"
-
+        description: The stack to deploy up or down. (Leave blank for default)
+        default: prod4
 jobs:
   defang:
-    name: Defang ${{ github.event.inputs.action || 'up' }} ${{ github.event.inputs.stack || 'test' }}
-    environment: production
+    name: Defang ${{ github.event.inputs.action || 'up' }} ${{ github.event.inputs.stack || 'prod4' }}
     runs-on: ubuntu-latest
+    timeout-minutes: 70
     permissions:
       contents: read
       id-token: write
-
     concurrency:
       cancel-in-progress: false
-      group: deploy-testactions-${{ github.event.inputs.stack || 'test' }}
-
+      group: deploy-testactions-${{ github.event.inputs.stack || 'prod4' }}
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
-
-      - name: Defang ${{ github.event.inputs.action || 'up' }} ${{ github.event.inputs.stack || 'test' }}
-        uses: DefangLabs/defang-github-action@v1.4.0
+      - name: Defang ${{ github.event.inputs.action || 'up' }} ${{ github.event.inputs.stack || 'prod4' }}
+        uses: DefangLabs/defang-github-action@v2
         with:
           command: ${{ github.event.inputs.action || 'up' }}
           project: testactions
-          stack: ${{ github.event.inputs.stack || 'test' }}
-
+          stack: ${{ github.event.inputs.stack || 'prod4' }}
       - name: Deployment Summary
-        uses: DefangLabs/defang-github-action@v1.4.0
+        uses: DefangLabs/defang-github-action@v2
         with:
           command: services
           project: testactions
-          stack: ${{ github.event.inputs.stack || 'test' }}
+          stack: ${{ github.event.inputs.stack || 'prod4' }}
+    environment: defang-prod4
