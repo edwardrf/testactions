@@ -32,6 +32,8 @@ jobs:
         uses: actions/checkout@v4
       - name: Defang ${{ github.event.inputs.action || 'up' }} ${{ github.event.inputs.stack || 'prod5' }}
         uses: DefangLabs/defang-github-action@v2
+        env:
+          DEFANG_FABRIC: fabric-dev.gnafed.click
         with:
           command: ${{ github.event.inputs.action || 'up' }}
           project: testactions
